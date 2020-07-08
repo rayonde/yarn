@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Advice &amp; FAQ &mdash; pygrape 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Full API Documentation" href="api.html" />
+    <link rel="prev" title="Using pyGRAPE" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pygrape
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Introduction to GRAPE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using pyGRAPE</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advice &amp; FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#choosing-an-initial-pulse">Choosing an initial pulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choosing-a-pulse-length">Choosing a pulse length</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-harmonic-oscillators">Linear Harmonic Oscillators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-the-optimization-progress">Monitoring the Optimization Progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parallel-execution">Parallel Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Full API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygrape</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Advice &amp; FAQ</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/misc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="advice-faq">
+<h1>Advice &amp; FAQ<a class="headerlink" href="#advice-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="choosing-an-initial-pulse">
+<h2>Choosing an initial pulse<a class="headerlink" href="#choosing-an-initial-pulse" title="Permalink to this headline">¶</a></h2>
+<p>The choice of initial pulse is an important but subtle factor in the performance of the algorithm.
+An incorrect choice could cause the algorithm to fail to converge, or return an unacceptable answer.
+For instance:</p>
+<ul class="simple">
+<li><p>a choice of all zeros will often fail because this is often a local minimum in the
+fidelity, where the derivative is zero.</p></li>
+<li><p>similarly, a choice with symmetries which can be broken in multiple ways by desired solution
+will fail for the same reason.</p></li>
+<li><p>a choice which is random at every point will usually converge to a solution, but the solution is
+usually unacceptable, since it will also appear “noisy”, i.e. have high frequency components.</p></li>
+</ul>
+<p>A suitable solution is then a smoothed random initial pulse. <code class="xref any docutils literal notranslate"><span class="pre">random_waves</span></code> is a convenience function
+for this purpose. It smoothly interpolates between a set of random points. You should choose the
+smallest number of points necessary to break all of the symmetries you expect.</p>
+</div>
+<div class="section" id="choosing-a-pulse-length">
+<h2>Choosing a pulse length<a class="headerlink" href="#choosing-a-pulse-length" title="Permalink to this headline">¶</a></h2>
+<p>Unfortunately, there is no prescription to offer here. If the pulse length is too short,
+the fidelity will never exceed some maximum value smaller than unity. One must experiment to find
+out which lengths work and which don’t. The relationship is not necessarily monotonic either, in
+that shorter pulses can sometimes converge much faster than longer pulses. A reasonable choice is
+to identify some critical frequency in the Hamiltonian, and take some number of periods.</p>
+</div>
+<div class="section" id="linear-harmonic-oscillators">
+<h2>Linear Harmonic Oscillators<a class="headerlink" href="#linear-harmonic-oscillators" title="Permalink to this headline">¶</a></h2>
+<p>When optimizing pulses for linear harmonic oscillators, one runs into the issue of truncation.
+In a real system, driving with a constant amplitude will never return you to the vacuum, but
+in a truncated system, there always exists some driving amplitude for which you will “wrap around”.</p>
+<video src="_static/truncation.mp4" style="margin: auto; display: block;" controls></video><p>To avoid this unphysical behavior, it often suffices to perform the optimization in two spaces
+with differing truncations.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_setup</span><span class="p">(</span><span class="n">trunc</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">qutip</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">trunc</span><span class="p">)</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">H0</span><span class="p">,</span> <span class="n">Hcs</span><span class="p">,</span> <span class="n">U_target</span>
+
+<span class="n">setups</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_setup</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">make_setup</span><span class="p">(</span><span class="mi">16</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>The truncation dependence can be gauged by evaluating the performance in a system
+with a larger truncation.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reprorters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="n">verify_from_setup</span><span class="p">(</span><span class="n">make_setup</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">run_grape</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">reporter_fns</span><span class="o">=</span><span class="n">reporters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If a discrepancy persists while using multiple truncations, it might be necessary to move
+to a nonhermitian hamiltonian.</p>
+</div>
+<div class="section" id="monitoring-the-optimization-progress">
+<h2>Monitoring the Optimization Progress<a class="headerlink" href="#monitoring-the-optimization-progress" title="Permalink to this headline">¶</a></h2>
+<p>Many times the optimization will take a good deal of time to complete. To reduce the cost of
+mistakes, it is better to catch them early. The mechanism for observing the progress of the
+optimization is using <a class="reference internal" href="api.html#reporters"><span class="std std-ref">Reporters</span></a>, which are instances of the <span class="xref std std-ref">Reporter</span> class
+supplied to the <code class="docutils literal notranslate"><span class="pre">reporters</span></code> argument of the <code class="xref any docutils literal notranslate"><span class="pre">run_grape</span></code> function. After every step of the
+algorithm, each of the supplied reporters is called using the data generated during that step.
+The data supplied to the reporter is indicated by the names of its arguments. The supported names
+are listed in the <code class="xref any docutils literal notranslate"><span class="pre">run_grape</span></code> documentation. For instance, to print the total cost after each
+5 iterations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">print_total_cost</span><span class="p">(</span><span class="n">Reporter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">tot_cost</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="n">tot_cost</span>
+
+<span class="n">run_grape</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">reporter_fns</span><span class="o">=</span><span class="p">[</span><span class="n">print_total_cost</span><span class="p">(</span><span class="mi">5</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>This works because <code class="docutils literal notranslate"><span class="pre">tot_cost</span></code> is a supported name corresponding to the total cost.</p>
+</div>
+<div class="section" id="parallel-execution">
+<h2>Parallel Execution<a class="headerlink" href="#parallel-execution" title="Permalink to this headline">¶</a></h2>
+<p>If multiple setups are used, each setup can be run in parallel on a separate process.
+To enable this feature, set the <code class="docutils literal notranslate"><span class="pre">n_proc</span></code> argument to <code class="xref any docutils literal notranslate"><span class="pre">run_grape</span></code> to a value larger
+than 1.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="Full API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage.html" class="btn btn-neutral float-left" title="Using pyGRAPE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Phil Reinhold
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction to GRAPE &mdash; pygrape 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using pyGRAPE" href="usage.html" />
+    <link rel="prev" title="pyGRAPE Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pygrape
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to GRAPE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quantum-optimal-control">Quantum Optimal Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#state-transfer">State Transfer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitary-evolution">Unitary Evolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#expectation-maximization">Expectation Maximization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#numerical-formulation">Numerical Formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numerical-optimization">Numerical Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-the-gradient">Calculating the Gradient</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using pyGRAPE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Advice &amp; FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Full API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygrape</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction to GRAPE</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/algorithm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction-to-grape">
+<h1>Introduction to GRAPE<a class="headerlink" href="#introduction-to-grape" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="quantum-optimal-control">
+<h2>Quantum Optimal Control<a class="headerlink" href="#quantum-optimal-control" title="Permalink to this headline">¶</a></h2>
+<p>Gradient Ascent Pulse Engineering (GRAPE) is a technique for performing numerical quantum
+optimal control. An optimal control problem is an optimization problem of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;\underset{\varepsilon(t)}{\text{minimize}}&amp;\;&amp; f[x(t)]\\
+&amp;\text{subject to}&amp;\;&amp; \dot{x} = A(x(t), \varepsilon(t), t), \; x(0) = x_0\end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(x\)</span> is the state of some system, <span class="math notranslate nohighlight">\(\varepsilon\)</span> is some set of controls,
+<span class="math notranslate nohighlight">\(A\)</span> describes the system evolution, and <span class="math notranslate nohighlight">\(f\)</span> is a cost functional, assigning values
+to different trajectories, which we wish to minimize over all admissible functions
+<span class="math notranslate nohighlight">\(\varepsilon(t)\)</span>. In particular, the <em>quantum</em> optimal control problem has a few forms.</p>
+<div class="section" id="state-transfer">
+<h3>State Transfer<a class="headerlink" href="#state-transfer" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}x(t) &amp;= |\psi(t)\rangle\\
+x(0) &amp;= |\psi(0)\rangle\\
+A(x(t), \varepsilon(t), t) &amp;= \frac{-i}{\hbar}(H_0 + \varepsilon(t) H_c)|\psi(t)\rangle\\
+f[x(t)] &amp;= -\left|\langle \phi_\text{target} | \psi(T) \rangle\right|\end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(H_0\)</span> is the base or drift hamiltonian, <span class="math notranslate nohighlight">\(H_c\)</span> is the control Hamiltonian, and
+<span class="math notranslate nohighlight">\(|\psi(t)\rangle\)</span> is the state vector. We wish to then maximize the overlap between the
+state vector and some target state <span class="math notranslate nohighlight">\(|\phi_\text{target}\rangle\)</span> at some final time <span class="math notranslate nohighlight">\(T\)</span>.</p>
+</div>
+<div class="section" id="unitary-evolution">
+<h3>Unitary Evolution<a class="headerlink" href="#unitary-evolution" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}x(t) &amp;= U(t)\\
+x(0) &amp;= \mathbb{I}\\
+A(x(t), \varepsilon(t), t) &amp;= \frac{-i}{\hbar}(H_0 + \varepsilon(t) H_c)U(t)\\
+f[x(t)] &amp;= -\left|\text{Tr}[U_\text{target}U^\dagger(T)]\right|\end{split}\]</div>
+<p>This is a generalization where we wish to optimize a full unitary transformation. This is equivalent
+to optimizing N simultaneous orthogonal state transfers where N is the system dimension. Intermediate
+problems taking the form of <span class="math notranslate nohighlight">\(k &lt; N\)</span> simultaneous state transfers are also possible.</p>
+</div>
+<div class="section" id="expectation-maximization">
+<h3>Expectation Maximization<a class="headerlink" href="#expectation-maximization" title="Permalink to this headline">¶</a></h3>
+<p>This is the same as the state transfer problem, except for the cost functional</p>
+<div class="math notranslate nohighlight">
+\[f[x(t)] &amp;= -\langle \psi(T)| \hat{O} |\psi(T) \rangle\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\hat{O}\)</span> is some observable operator.</p>
+</div>
+</div>
+<div class="section" id="numerical-formulation">
+<h2>Numerical Formulation<a class="headerlink" href="#numerical-formulation" title="Permalink to this headline">¶</a></h2>
+<p>Most optimal control problems do not have closed form solutions readily accessible. In order to find
+solutions numerically, we must restrict our admissible functions to lie in some finite dimensional
+space</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon(t) = \sum_{k=1}^N b_k g_k(t)\]</div>
+<p>In GRAPE, we let the basis functions <span class="math notranslate nohighlight">\(g_k(t)\)</span> be unit pulses in the interval
+<span class="math notranslate nohighlight">\([k\delta t, (k+1)\delta t]\)</span> for some fixed <span class="math notranslate nohighlight">\(\delta t\)</span>. I.e. we restrict ourselves to
+piecewise constant functions with regular intervals. Our solutions then lie in a vector space of
+dimension <span class="math notranslate nohighlight">\(N = T / \delta t\)</span>. This restriction is suitable, since it presents an easy way
+of calculating the total propagator, and also because at the end of the day we will be sending an
+array of points to an AWG. With this parameterization, the propagator can be calculated as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U(T) &amp;= U_N U_{N-1} \ldots U_{2} U_1\\
+U_k &amp;= \exp\left(-i (H_0 + b_k H_c) \delta t / \hbar\right)\end{split}\]</div>
+</div>
+<div class="section" id="numerical-optimization">
+<h2>Numerical Optimization<a class="headerlink" href="#numerical-optimization" title="Permalink to this headline">¶</a></h2>
+<p>Considering the unitary evolution formulation for a moment, we now have the problem</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\underset{\mathbf{b}\in\mathbb{R}^N}{\text{minimize}} &amp;\;&amp; f(\mathbf{b})\\
+f(\mathbf{b}) &amp;=&amp; \left|\text{Tr}[U_\text{target}^\dagger U(b_N)\ldots U(b_1)]\right|\end{split}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(N\)</span> may be very large, the search space is of very high dimension. Moreover, the
+calculation of <span class="math notranslate nohighlight">\(f(\mathbf{b})\)</span> is computationally intensive, and may require a significant
+amount of time. This problem can be circumvented if we can guide our search for a solution using
+the <em>gradient</em>, <span class="math notranslate nohighlight">\(\mathbf{g} = \nabla_\mathbf{b} f\)</span>. By calculating <span class="math notranslate nohighlight">\(\mathbf{g}\)</span>,
+we can try to take steps which always decrease the cost.</p>
+</div>
+<div class="section" id="calculating-the-gradient">
+<h2>Calculating the Gradient<a class="headerlink" href="#calculating-the-gradient" title="Permalink to this headline">¶</a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial f}{\partial b_k} &amp;= \left|\text{Tr}[U_\text{target}^\dagger U(b_N)
+\ldots \frac{\partial U(b_k)}{\partial b_k} \ldots U(b_1)]\right|\\
+\frac{\partial U(b_k)}{\partial b_k} &amp;= \frac{\partial}{\partial b_k}e^{-\frac{i\delta t}{\hbar}(H_0 + b_k H_c)}\\\end{split}\]</div>
+<p>Calculating this derivative is somewhat involved. The derivation is presented for the sake
+of completeness.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial}{\partial x} e^{A(x)} &amp;=
+\frac{\partial}{\partial x} \lim_{N\rightarrow\infty} \left(\mathbb{I} + \frac{A}{N}\right)^N\\
+&amp;= \lim_{N\rightarrow\infty} \sum_{k=1}^N \left(\mathbb{I} + \frac{A}{N}\right)^{k-1}
+\frac{\partial A}{\partial x} \left(\mathbb{I} + \frac{A}{N}\right)^{N-k}\\
+&amp;= \int_0^1\!\!\mathrm{d}s\; e^{sA}\frac{\partial A}{\partial x}e^{(1-s)A}\end{split}\]</div>
+<p>If <span class="math notranslate nohighlight">\(A\)</span> is an (anti-)hermitian operator, it has the eigendecomposition
+<span class="math notranslate nohighlight">\(A = V \Lambda V^\dagger\)</span> where <span class="math notranslate nohighlight">\(V\)</span> is a unitary matrix whose columns are eigenvectors
+and <span class="math notranslate nohighlight">\(\Lambda\)</span> is a diagonal matrix whose elements are eigenvalues,
+<span class="math notranslate nohighlight">\(\Lambda_{ij} = \delta_{ij}\lambda_i\)</span>. Then, it follows that
+<span class="math notranslate nohighlight">\(e^{sA} = V e^{s\Lambda} V^\dagger\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial}{\partial x} e^{A(x)} &amp;=
+V \left(\int_0^1\!\!\mathrm{d}s\; e^{s\Lambda} V^\dagger
+\frac{\partial A}{\partial x}
+V e^{(1-s)\Lambda}\right)V^\dagger\\\end{split}\]</div>
+<p>Defining <span class="math notranslate nohighlight">\(K \equiv V^\dagger \frac{\partial A}{\partial x} V\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial}{\partial x} e^{A(x)} &amp;=
+V \left(\int_0^1\!\!\mathrm{d}s\; e^{s\Lambda} K e^{(1-s)\Lambda}\right)V^\dagger\\
+\left(\frac{\partial}{\partial x} e^{A(x)}\right)_{il}
+&amp;= \sum_{jk}
+V_{ij} \left(\int_0^1\!\!\mathrm{d}s\; e^{s\lambda_j} K_{jk} e^{(1-s)\lambda_k}\right)V^\dagger_{kl}\\
+&amp;= \sum_{jk}
+V_{ij} K_{jk} V^\dagger_{kl}
+\left(\int_0^1\!\!\mathrm{d}s\; e^{s\lambda_j} e^{(1-s)\lambda_k}\right)\\
+&amp;= \sum_{jklm}
+V_{ij} K_{jk} V^\dagger_{kl}
+\frac{e^{\lambda_j} - e^{\lambda_k}}{\lambda_j - \lambda_k}\\\end{split}\]</div>
+<p>We define <span class="math notranslate nohighlight">\(\Gamma_{jk} = \frac{e^{\lambda_j} - e^{\lambda_k}}{\lambda_j - \lambda_k}\)</span>. Note
+that <span class="math notranslate nohighlight">\(\lim_{\lambda_k \rightarrow \lambda_j} \Gamma_{jk} = e^{\lambda_j}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left(\frac{\partial}{\partial x} e^{A(x)}\right)_{il}
+&amp;= \sum_{jk}
+V_{ij} \Gamma_{jk} K_{jk} V^\dagger_{mn}\\
+\frac{\partial}{\partial x} e^{A(x)} &amp;=
+V \left(\Gamma \odot K\right) V^\dagger\\
+&amp;= V \left(\Gamma \odot \left(V^\dagger \frac{\partial A}{\partial x} V\right)\right) V^\dagger\\\end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\odot\)</span> is the hadamard product <span class="math notranslate nohighlight">\((A \odot B)_{ij} = A_{ij} B_{ij}\)</span>.</p>
+<p>Then the derivative we originally sought is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial U(b_k)}{\partial b_k}
+&amp;= \frac{\partial}{\partial b_k}e^{-\frac{i\delta t}{\hbar}(H_0 + b_k H_c)}\\
+&amp;= \frac{-i\delta t}{\hbar} V \left(\Gamma \odot \left(V^\dagger H_c V\right)\right) V^\dagger\\\end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(\Gamma\)</span> are from the eigendecomposition of <span class="math notranslate nohighlight">\(H_0 + b_k H_c\)</span></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="usage.html" class="btn btn-neutral float-right" title="Using pyGRAPE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="pyGRAPE Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Phil Reinhold
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using pyGRAPE &mdash; pygrape 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advice &amp; FAQ" href="misc.html" />
+    <link rel="prev" title="Introduction to GRAPE" href="algorithm.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pygrape
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Introduction to GRAPE</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using pyGRAPE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#simple-example">Simple Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-controls">Multiple Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enforcing-robustness">Enforcing Robustness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#state-transfer-formulation">State Transfer Formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bounding-the-pulse-amplitude">Bounding the Pulse Amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allowing-gauge-degrees-of-freedom">Allowing Gauge Degrees of Freedom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accounting-for-finite-output-bandwidth">Accounting for Finite Output Bandwidth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#open-system-dynamics">Open System Dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#non-hermitian-hamiltonian">Non-Hermitian Hamiltonian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lindblad-equation">Lindblad Equation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Advice &amp; FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Full API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygrape</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Using pyGRAPE</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-pygrape">
+<h1>Using pyGRAPE<a class="headerlink" href="#using-pygrape" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All of the following examples can be found in the examples directory in the main repository</p>
+</div>
+<div class="section" id="simple-example">
+<h2>Simple Example<a class="headerlink" href="#simple-example" title="Permalink to this headline">¶</a></h2>
+<p>To start let’s see the most basic example. Let’s say we want to do a pi pulse on a qubit.</p>
+<img alt="_static/pi_pulse_ctrls.png" src="_static/pi_pulse_ctrls.png" />
+</div>
+<div class="section" id="multiple-controls">
+<h2>Multiple Controls<a class="headerlink" href="#multiple-controls" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s use two simultaneous drives. One along x and one along y.</p>
+<img alt="_static/pi_pulse_xy_ctrls.png" src="_static/pi_pulse_xy_ctrls.png" />
+</div>
+<div class="section" id="enforcing-robustness">
+<h2>Enforcing Robustness<a class="headerlink" href="#enforcing-robustness" title="Permalink to this headline">¶</a></h2>
+<p>We can make the output robust by simultaneously optimizing with several setups. In this case,
+our setups are identical except for the detuning in the base hamiltonian. Now our goal is to
+maximize the sum of the fidelities that come from simulating a given pulse under these different
+hamiltonians.</p>
+<img alt="_static/pi_pulse_robust_ctrls.png" src="_static/pi_pulse_robust_ctrls.png" />
+</div>
+<div class="section" id="state-transfer-formulation">
+<h2>State Transfer Formulation<a class="headerlink" href="#state-transfer-formulation" title="Permalink to this headline">¶</a></h2>
+<p>Often, we don’t want to optimize a full unitary. For instance, if we have an N-level qudit,
+and we want to do a pi pulse on the first two levels, we may not care what the pulse
+does to population in the rest of the levels. To set up this problem, we specify a list of
+initial states and a list of final states instead of a unitary matrix.</p>
+<img alt="_static/pi_pulse_state_transfer_ctrls.png" src="_static/pi_pulse_state_transfer_ctrls.png" />
+</div>
+<div class="section" id="bounding-the-pulse-amplitude">
+<h2>Bounding the Pulse Amplitude<a class="headerlink" href="#bounding-the-pulse-amplitude" title="Permalink to this headline">¶</a></h2>
+<p>One way of handling constraints is by including penalty terms to the cost. For instance,
+we can bound the pulse amplitude by introducing a penalty term proportional to the
+amplitude of the pulse. One caveat is that the penalty terms must be differentiable in order
+to be compatible with the gradient ascent method.</p>
+<img alt="_static/pi_pulse_bounded_ctrls.png" src="_static/pi_pulse_bounded_ctrls.png" />
+</div>
+<div class="section" id="allowing-gauge-degrees-of-freedom">
+<h2>Allowing Gauge Degrees of Freedom<a class="headerlink" href="#allowing-gauge-degrees-of-freedom" title="Permalink to this headline">¶</a></h2>
+<p>If what we are looking to find is not some particular unitary, but rather any unitary
+from a continuous family of unitaries, we can make our problem easier by including
+a gauge degree of freedom. We then seek to maximize the fidelity of <span class="math notranslate nohighlight">\(U_\text{eff}\)</span>
+to <span class="math notranslate nohighlight">\(U_\text{target}\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[U_\text{eff}(\phi, \varepsilon(t)) = e^{i\phi G} U(T, \varepsilon(t))\]</div>
+<p>With <span class="math notranslate nohighlight">\(G\)</span> as some hermitian operator. Or even more generally, we can include multiple
+operators</p>
+<div class="math notranslate nohighlight">
+\[U_\text{eff}\left(\{\phi_k\},\varepsilon(t)\right) = e^{i\sum_k\phi_k G_k} U(T, \varepsilon(t))\]</div>
+<p>Here we’ll optimize a <span class="math notranslate nohighlight">\(\pi/2\)</span> pulse where we don’t care about the axis of rotation.
+This additional degree of freedom comes as an extra <span class="math notranslate nohighlight">\(e^{i\phi \sigma_z}\)</span> applied
+to the final unitary.</p>
+<img alt="_static/pi_2_pulse_gauge_prop.png" src="_static/pi_2_pulse_gauge_prop.png" />
+</div>
+<div class="section" id="accounting-for-finite-output-bandwidth">
+<h2>Accounting for Finite Output Bandwidth<a class="headerlink" href="#accounting-for-finite-output-bandwidth" title="Permalink to this headline">¶</a></h2>
+<p>The GRAPE model uses a piecewise constant model for the pulse amplitude. When playing a pulse on
+real hardware, however, the finite output bandwidth of the AWG results in a pulse which is not
+piecewise constant, but rather the convolution of a piecewise constant function and an impulse
+response. For longer, smoother  pulses, where the slope between any two adjacent points is small,
+this effect can be neglected. If the pulse is short and sharp, it must be accounted for to give
+accurate results. We can do this by supplying either a known impulse response, or a filter function
+which can generate the response. Additionally, we may need to subsample, i.e. simulate at a finer
+resolution than the control point spacing.</p>
+<img alt="_static/pi_pulse_subsample.png" src="_static/pi_pulse_subsample.png" />
+</div>
+<div class="section" id="open-system-dynamics">
+<h2>Open System Dynamics<a class="headerlink" href="#open-system-dynamics" title="Permalink to this headline">¶</a></h2>
+<p>There are two approaches to handling open system dynamics</p>
+<ol class="arabic simple">
+<li><p>Use the Lindblad master equation to simulate the full density matrix evolution</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\dot{\rho} = \frac{i}{\hbar}[H(t), \rho] + \sum_k \mathcal{D}[c_k](\rho)\]</div>
+<ol class="arabic simple" start="2">
+<li><p>Use a nonhermitian hamiltonian</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial t}|\psi\rangle = \frac{i}{\hbar}\left(
+H(t) + \frac{i}{2}\sum_k c_k^\dagger c_k\right)|\psi\rangle\]</div>
+<p>Conceptually the difference between the two comes from whether or not you track the evolution of
+states which have undergone an error. Errors transform the density matrix by reducing its purity.
+Errors transform the state vector (in the nonhermitian hamiltonian formalism) by reducing its norm.
+While the former is more precise, the latter is much easier to compute. Luckily, the latter should
+never overestimate the fidelity of a pulse. Which means that a pulse which works well in the
+nonhermitian formalism should also perform well in the Lindblad formalism.</p>
+<div class="section" id="non-hermitian-hamiltonian">
+<h3>Non-Hermitian Hamiltonian<a class="headerlink" href="#non-hermitian-hamiltonian" title="Permalink to this headline">¶</a></h3>
+<p>In order to include open system dynamics, supply a <code class="docutils literal notranslate"><span class="pre">c_ops</span></code> argument to the setup you are using.
+This should be a list of (not necessarily hermitian operators) representing possible errors. They
+should be scaled by the square root of the error rate, i.e. <span class="math notranslate nohighlight">\(\sqrt{\kappa} a\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The hermitian-ness of the hamiltonian provided is automatically detected. When you create
+the setup, a warning should appear letting you know that the arguments were nonhermitian</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A different differentiation algorithm needs to be used if the hamiltonian is
+nonhermitian. This algorithm is slower than the hermitian algorithm by roughly a factor
+of 5.</p>
+</div>
+<img alt="_static/pi_pulse_nonhermitian_ctrls.png" src="_static/pi_pulse_nonhermitian_ctrls.png" />
+</div>
+<div class="section" id="lindblad-equation">
+<h3>Lindblad Equation<a class="headerlink" href="#lindblad-equation" title="Permalink to this headline">¶</a></h3>
+<p>Optimizing pulses within the lindblad open system dynamics is possible in principle. One can transform the equations
+governing the GRAPE algorithm as follows.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}iH &amp;\rightarrow L = i(H^T \otimes H) + \sum_k c_k^*\otimes c_k -
+\frac{1}{2}\left(\mathbb{I}\otimes c^\dagger c  + (c^\dagger c)^T\otimes \mathbb{I}\right)\\
+\big\{|\psi_k\rangle\big\}_{k\in [n]} &amp;\rightarrow \big\{|\rho_{k,k'})\big\}_{k\in [n], k'\in [n]} =
+\big\{\text{vec}(|\psi_k\rangle\langle\psi_{k'}|)\big\}_{k\in [n], k'\in [n]}\end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\text{vec}\)</span> is the row-stacking operator taking
+<span class="math notranslate nohighlight">\(\mathbb{C}^{d\times d} \rightarrow \mathbb{C}^{d^2}\)</span>, and <span class="math notranslate nohighlight">\(\{c_k\}\)</span> are the collapse
+operators. This is to say that the Liouvillian <span class="math notranslate nohighlight">\(L\)</span> acts on vectorized density matrices just
+as the Hamiltonian <span class="math notranslate nohighlight">\(H\)</span> acts on states. The computational cost of the open system approach then
+comes from the change in effective system dimension from <span class="math notranslate nohighlight">\(d\)</span> to <span class="math notranslate nohighlight">\(d^2\)</span>. For small systems
+this cost may be bearable, but for large systems it may not.</p>
+<img alt="_static/pi_pulse_lindblad_ctrls.png" src="_static/pi_pulse_lindblad_ctrls.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="misc.html" class="btn btn-neutral float-right" title="Advice &amp; FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="algorithm.html" class="btn btn-neutral float-left" title="Introduction to GRAPE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Phil Reinhold
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
